@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Los Pronombres Personales - 4º Primaria</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Ubuntu', sans-serif;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 50%, #80deea 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 950px;
+            background: #ffffff;
+            border-radius: 24px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            border: 6px solid #00acc1;
+            overflow: hidden;
+            position: relative;
+            min-height: 680px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* PANTALLAS */
+        .screen {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            padding: 25px 30px;
+            flex-grow: 1;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PANTALLA INICIAL */
+        .header-title-box {
+            border: 4px solid #00838f;
+            background-color: #00acc1;
+            color: white;
+            padding: 18px 30px;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 2.1rem;
+            font-weight: bold;
+            box-shadow: 0 6px 0 #00838f;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            width: 100%;
+        }
+
+        .tags-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .badge-tag {
+            background-color: #00838f;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 6px 18px;
+            border-radius: 20px;
+            box-shadow: 0 4px 0 #006064;
+        }
+
+        .badge-tag.light-cyan {
+            background-color: #26c6da;
+            box-shadow: 0 4px 0 #00acc1;
+        }
+
+        /* DISTRIBUCIÓN PANTALLA INICIAL */
+        .main-layout-row {
+            display: flex;
+            width: 100%;
+            gap: 20px;
+            margin-bottom: 25px;
+            align-items: stretch;
+        }
+
+        .left-icons-column {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
+        .state-icon-card {
+            background: #e0f7fa;
+            border: 3px solid #4dd0e1;
+            border-radius: 18px;
+            padding: 12px;
+            width: 190px;
+            text-align: center;
+            font-size: 2.1rem;
+            box-shadow: 0 6px 0 #b2ebf2;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .state-icon-card:hover {
+            transform: scale(1.05);
+        }
+
+        .state-icon-card span {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #006064;
+        }
+
+        /* VENTANA CURRICULAR */
+        .curriculum-box {
+            flex: 1.5;
+            border: 4px solid #00838f;
+            background-color: #e0f7fa;
+            border-radius: 18px;
+            padding: 15px;
+            box-shadow: 0 6px 0 #006064;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .curriculum-title {
+            color: #006064;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 8px;
+            border-bottom: 2px dashed #4dd0e1;
+            padding-bottom: 4px;
+        }
+
+        .curriculum-content {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            color: #004d40;
+            overflow-y: auto;
+        }
+
+        .curriculum-section-title {
+            font-weight: bold;
+            color: #00838f;
+            margin-top: 8px;
+            display: block;
+        }
+
+        .buttons-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 35px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.1s;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.2);
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-comenzar {
+            background-color: #00acc1;
+            box-shadow: 0 6px 0 #00838f;
+        }
+        .btn-comenzar:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #00838f;
+        }
+
+        .btn-explicacion {
+            background-color: #26c6da;
+            box-shadow: 0 6px 0 #00acc1;
+        }
+        .btn-explicacion:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0 #00acc1;
+        }
+
+        .btn-nav {
+            background-color: #00acc1;
+            box-shadow: 0 6px 0 #00838f;
+            font-size: 1.1rem;
+            padding: 10px 25px;
+        }
+        .btn-nav:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #00838f;
+        }
+
+        .btn-check {
+            background-color: #4caf50;
+            box-shadow: 0 6px 0 #2e7d32;
+        }
+        .btn-check:active {
+            transform: translateY(3px);
+            box-shadow: 0 3px 0 #2e7d32;
+        }
+
+        /* EXPLICACIÓN TEÓRICA */
+        .expl-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .expl-title {
+            color: #006064;
+            font-size: 1.7rem;
+            font-weight: bold;
+        }
+
+        .btn-audio {
+            background-color: #26c6da;
+            box-shadow: 0 5px 0 #00acc1;
+            font-size: 1rem;
+            padding: 8px 18px;
+        }
+
+        .expl-box-blue {
+            background-color: #e0f7fa;
+            border: 4px solid #4dd0e1;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 6px 0 #b2ebf2;
+            text-align: left;
+            max-width: 850px;
+            color: #004d40;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .expl-box-blue ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .expl-box-blue li {
+            margin-bottom: 10px;
+        }
+
+        /* TABLA DE PRONOMBRES */
+        .pronoun-table {
+            width: 100%;
+            max-width: 750px;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 3px solid #00838f;
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .pronoun-table th, .pronoun-table td {
+            padding: 8px 12px;
+            text-align: center;
+            font-weight: bold;
+            border: 1px solid #b2ebf2;
+            font-size: 0.95rem;
+        }
+
+        .pronoun-table th {
+            color: white;
+            font-size: 1rem;
+        }
+
+        .th-p1 { background-color: #26c6da; }
+        .th-p2 { background-color: #66bb6a; }
+        .th-p3 { background-color: #ab47bc; }
+        .td-header { background-color: #ffa726; color: white; }
+
+        /* ZONAS DRAG & DROP Y ORACIONES */
+        .bank-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            background: #f5f5f5;
+            border: 3px dashed #b2ebf2;
+            border-radius: 16px;
+            padding: 12px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 20px;
+            min-height: 60px;
+        }
+
+        .drag-tag {
+            background-color: #ff9800;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 18px;
+            font-weight: bold;
+            font-size: 1rem;
+            cursor: grab;
+            box-shadow: 0 3px 0 #e65100;
+            transition: transform 0.1s;
+        }
+
+        .drag-tag:active {
+            cursor: grabbing;
+            transform: scale(0.95);
+        }
+
+        .sentences-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 850px;
+            margin-bottom: 20px;
+        }
+
+        .sentence-row {
+            background: #fff3e0;
+            border: 2px solid #ffe0b2;
+            border-radius: 14px;
+            padding: 12px 20px;
+            font-size: 1.15rem;
+            color: #e65100;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            font-weight: bold;
+        }
+
+        .subject-badge {
+            background: #ffe0b2;
+            color: #d84315;
+            padding: 4px 10px;
+            border-radius: 8px;
+            border: 1px dashed #f57c00;
+            font-style: italic;
+        }
+
+        .drop-target {
+            min-width: 140px;
+            height: 42px;
+            border: 2px dashed #f57c00;
+            border-radius: 12px;
+            background: #ffffff;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 8px;
+        }
+
+        .drop-target .drag-tag {
+            box-shadow: none;
+            margin: 0;
+        }
+
+        /* ACTIVIDAD 3: COLUMNAS DE EMPAREJAR */
+        .match-columns {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 800px;
+            gap: 30px;
+            margin-bottom: 20px;
+        }
+
+        .match-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .match-card {
+            background: #ffffff;
+            border: 3px solid #80deea;
+            border-radius: 14px;
+            padding: 14px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #006064;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #b2ebf2;
+            transition: all 0.2s;
+        }
+
+        .match-card:hover {
+            transform: translateY(-2px);
+            border-color: #00acc1;
+        }
+
+        .match-card.selected {
+            border-color: #ff9800;
+            background-color: #fff3e0;
+            box-shadow: 0 4px 0 #ffe0b2;
+        }
+
+        /* NOTAS ILUSTRATIVAS (ACT 3) */
+        .notes-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .paper-note {
+            flex: 1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .paper-note.purple { background-color: #f3e5f5; border-left: 5px solid #ab47bc; color: #4a148c; }
+        .paper-note.grid { background-color: #e0f7fa; border-left: 5px solid #26c6da; color: #004d40; }
+
+        /* FEEDBACK Y TOAST */
+        .feedback-toast {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 30px;
+            border-radius: 30px;
+            color: white;
+            font-weight: bold;
+            font-size: 1.3rem;
+            z-index: 100;
+            display: none;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            animation: popUp 0.3s ease-out;
+        }
+
+        @keyframes popUp {
+            0% { transform: translate(-50%, -20px); opacity: 0; }
+            100% { transform: translate(-50%, 0); opacity: 1; }
+        }
+
+        .footer-credits {
+            margin-top: auto;
+            font-size: 0.95rem;
+            color: #00838f;
+            text-align: center;
+            border-top: 2px dashed #80deea;
+            padding-top: 12px;
+            width: 100%;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        
+        <div id="feedback-toast" class="feedback-toast"></div>
+
+        <!-- ================= PANTALLA INICIAL ================= -->
+        <div id="screen-inicio" class="screen active">
+            <div class="header-title-box">
+                Los Pronombres Personales
+            </div>
+            
+            <div class="tags-container">
+                <div class="badge-tag">4º PRIMARIA</div>
+                <div class="badge-tag light-cyan">LENGUA CASTELLANA</div>
+            </div>
+
+            <div class="main-layout-row">
+                <div class="left-icons-column">
+                    <div class="state-icon-card">🗣️ <span>1.ª PERSONA</span></div>
+                    <div class="state-icon-card">👂 <span>2.ª PERSONA</span></div>
+                    <div class="state-icon-card">👥 <span>3.ª PERSONA</span></div>
+                </div>
+
+                <div class="curriculum-box">
+                    <div class="curriculum-title">Resumen de Aprendizajes</div>
+                    <div class="curriculum-content">
+                        <span class="curriculum-section-title">📘 ¿Qué son los pronombres personales?</span>
+                        Son palabras que sirven para nombrar a las personas, los animales o las cosas sin utilizar sustantivos.<br><br>
+                        
+                        <span class="curriculum-section-title">🔹 1.ª Persona:</span> Nombran a las personas que hablan (ej. <em>yo, nosotros, nosotras</em>).<br>
+                        <span class="curriculum-section-title">🔹 2.ª Persona:</span> Nombran a las personas que escuchan (ej. <em>tú, vosotros, vosotras, usted, ustedes</em>).<br>
+                        <span class="curriculum-section-title">🔹 3.ª Persona:</span> Nombran a otras personas, animales o cosas (ej. <em>él, ella, ellos, ellas</em>).
+                    </div>
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-comenzar" onclick="goToScreen('screen-act1')">🎮 COMENZAR</button>
+                <button class="btn btn-explicacion" onclick="goToScreen('screen-exp-1')">📖 EXPLICACIÓN</button>
+            </div>
+
+            <div class="footer-credits">
+                Elaborado por la maestra de Educación Primaria
+            </div>
+        </div>
+
+        <!-- ================= EXPLICACIÓN TEÓRICA ================= -->
+        <div id="screen-exp-1" class="screen">
+            <div class="expl-header-row">
+                <div class="expl-title">Los Pronombres Personales</div>
+                <button class="btn btn-audio" onclick="speakText('exp-text-box')">🔊 Escuchar</button>
+            </div>
+
+            <div id="exp-text-box" class="expl-box-blue">
+                Los <strong>pronombres personales</strong> son palabras que sirven para nombrar a las personas, los animales o las cosas sin utilizar sustantivos.
+                <ul>
+                    <li><strong>Los pronombres de primera persona</strong> sirven para nombrar a las personas que hablan. Por ejemplo: <em>yo, nosotros, nosotras</em>.</li>
+                    <li><strong>Los pronombres de segunda persona</strong> sirven para nombrar a las personas que escuchan. Por ejemplo: <em>tú, vosotros, vosotras</em> o los pronombres de cortesía <em>usted, ustedes</em>.<br>
+                    <small>*(En Canarias y en algunas zonas de Andalucía se utiliza <em>ustedes</em> en lugar de <em>vosotros</em> y <em>vosotras</em>).*</small></li>
+                    <li><strong>Los pronombres de tercera persona</strong> sirven para nombrar a otras personas, animales o cosas. Por ejemplo: <em>él, ella, ellos, ellas</em>.</li>
+                </ul>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-nav" onclick="goToScreen('screen-inicio')">🏠 Inicio</button>
+                <button class="btn btn-comenzar" onclick="goToScreen('screen-act1')">🎮 Ir a Actividades</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ================= ACTIVIDAD 1 ================= -->
+        <div id="screen-act1" class="screen">
+            <div class="expl-title" style="margin-bottom: 10px;">Actividad 1: Estudia y Completa</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">1. ESTUDIA las formas de los pronombres personales y completa las oraciones arrastrando los pronombres.</p>
+
+            <!-- Tabla de pronombres -->
+            <table class="pronoun-table">
+                <thead>
+                    <tr>
+                        <th class="td-header">NÚMERO</th>
+                        <th class="th-p1">1.ª PERSONA</th>
+                        <th class="th-p2">2.ª PERSONA</th>
+                        <th class="th-p3">3.ª PERSONA</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="td-header">SINGULAR</td>
+                        <td>yo</td>
+                        <td>tú, usted</td>
+                        <td>él, ella</td>
+                    </tr>
+                    <tr>
+                        <td class="td-header">PLURAL</td>
+                        <td>nosotros, nosotras</td>
+                        <td>vosotros, vosotras, ustedes</td>
+                        <td>ellos, ellas</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- Banco de palabras arrastrables -->
+            <div class="bank-container" id="bank-act1" ondragover="allowDrop(event)" ondrop="drop(event)">
+                <div class="drag-tag" draggable="true" ondragstart="drag(event)" id="tag-act1-usted">usted</div>
+                <div class="drag-tag" draggable="true" ondragstart="drag(event)" id="tag-act1-nosotros">Nosotros</div>
+                <div class="drag-tag" draggable="true" ondragstart="drag(event)" id="tag-act1-ellos">Ellos</div>
+                <div class="drag-tag" draggable="true" ondragstart="drag(event)" id="tag-act1-vosotras">vosotras</div>
+            </div>
+
+            <!-- Oraciones a completar -->
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 Disculpa, ¿conoce <div class="drop-target" id="drop-1" data-ans="tag-act1-usted" ondragover="allowDrop(event)" ondrop="drop(event)"></div> a mi tío?
+                </div>
+                <div class="sentence-row">
+                    🔹 <div class="drop-target" id="drop-2" data-ans="tag-act1-nosotros" ondragover="allowDrop(event)" ondrop="drop(event)"></div> compraremos el regalo de Eva.
+                </div>
+                <div class="sentence-row">
+                    🔹 <div class="drop-target" id="drop-3" data-ans="tag-act1-ellos" ondragover="allowDrop(event)" ondrop="drop(event)"></div> siempre llegan tarde.
+                </div>
+                <div class="sentence-row">
+                    🔹 Reyes y <div class="drop-target" id="drop-4" data-ans="tag-act1-vosotras" ondragover="allowDrop(event)" ondrop="drop(event)"></div> sois bienvenidas.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct1()">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act2-1')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ================= ACTIVIDAD 2 (5 PANTALLAS CON TODOS LOS PRONOMBRES A LA VISTA) ================= -->
+        
+        <!-- PLAN TANTILLA PARA EL BANCO DE PRONOMBRES COMPLETO DE LA ACTIVIDAD 2 -->
+        
+        <!-- ACT 2 - PANTALLA 1 -->
+        <div id="screen-act2-1" class="screen">
+            <div class="expl-title" style="margin-bottom: 5px;">Actividad 2 (1/5): Sustituye por el pronombre</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">2. Arrastra el pronombre correcto al recuadro para sustituir al sujeto destacado.</p>
+
+            <div class="bank-container" id="bank-act2-1" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Iván y Dani</span> ➔ <div class="drop-target" id="drop2-1" data-ans="Ellos" ondragover="allowDrop(event)" ondrop="drop(event)"></div> son mis mejores amigos.
+                </div>
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Sara y yo</span> ➔ <div class="drop-target" id="drop2-2" data-ans="Nosotras" ondragover="allowDrop(event)" ondrop="drop(event)"></div> vamos juntas a natación.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct2Generic(['drop2-1', 'drop2-2'])">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act2-2')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ACT 2 - PANTALLA 2 -->
+        <div id="screen-act2-2" class="screen">
+            <div class="expl-title" style="margin-bottom: 5px;">Actividad 2 (2/5): Sustituye por el pronombre</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">2. Arrastra el pronombre correcto al recuadro para sustituir al sujeto destacado.</p>
+
+            <div class="bank-container" id="bank-act2-2" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Tu hermanita</span> ➔ <div class="drop-target" id="drop2-3" data-ans="Ella" ondragover="allowDrop(event)" ondrop="drop(event)"></div> es bastante traviesa.
+                </div>
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Manuel y tú</span> ➔ <div class="drop-target" id="drop2-4" data-ans="Vosotros" ondragover="allowDrop(event)" ondrop="drop(event)"></div> corréis muy rápido.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct2Generic(['drop2-3', 'drop2-4'])">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act2-3')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ACT 2 - PANTALLA 3 -->
+        <div id="screen-act2-3" class="screen">
+            <div class="expl-title" style="margin-bottom: 5px;">Actividad 2 (3/5): Sustituye por el pronombre</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">2. Arrastra el pronombre correcto al recuadro para sustituir al sujeto destacado.</p>
+
+            <div class="bank-container" id="bank-act2-3" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">El perro</span> ➔ <div class="drop-target" id="drop2-5" data-ans="Él" ondragover="allowDrop(event)" ondrop="drop(event)"></div> juega con la pelota en el jardín.
+                </div>
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">María y Lucía</span> ➔ <div class="drop-target" id="drop2-6" data-ans="Ellas" ondragover="allowDrop(event)" ondrop="drop(event)"></div> estudian en la biblioteca.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct2Generic(['drop2-5', 'drop2-6'])">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act2-4')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ACT 2 - PANTALLA 4 -->
+        <div id="screen-act2-4" class="screen">
+            <div class="expl-title" style="margin-bottom: 5px;">Actividad 2 (4/5): Sustituye por el pronombre</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">2. Arrastra el pronombre correcto al recuadro para sustituir al sujeto destacado.</p>
+
+            <div class="bank-container" id="bank-act2-4" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">El alumno (hablando de mí)</span> ➔ <div class="drop-target" id="drop2-7" data-ans="Yo" ondragover="allowDrop(event)" ondrop="drop(event)"></div> leo un libro muy interesante.
+                </div>
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Señores profesores</span> ➔ <div class="drop-target" id="drop2-8" data-ans="Ustedes" ondragover="allowDrop(event)" ondrop="drop(event)"></div> pasen por la dirección.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct2Generic(['drop2-7', 'drop2-8'])">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act2-5')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ACT 2 - PANTALLA 5 -->
+        <div id="screen-act2-5" class="screen">
+            <div class="expl-title" style="margin-bottom: 5px;">Actividad 2 (5/5): Sustituye por el pronombre</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">2. Arrastra el pronombre correcto al recuadro para sustituir al sujeto destacado.</p>
+
+            <div class="bank-container" id="bank-act2-5" ondragover="allowDrop(event)" ondrop="drop(event)"></div>
+
+            <div class="sentences-list">
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Carlos (a quien escucho)</span> ➔ <div class="drop-target" id="drop2-9" data-ans="Tú" ondragover="allowDrop(event)" ondrop="drop(event)"></div> eres muy amable.
+                </div>
+                <div class="sentence-row">
+                    🔹 <span class="subject-badge">Mi hermano y yo</span> ➔ <div class="drop-target" id="drop2-10" data-ans="Nosotros" ondragover="allowDrop(event)" ondrop="drop(event)"></div> comemos pizza cenando juntos.
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct2Generic(['drop2-9', 'drop2-10'])">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-act3')">Siguiente ➡️</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+        <!-- ================= ACTIVIDAD 3 ================= -->
+        <div id="screen-act3" class="screen">
+            <div class="expl-title" style="margin-bottom: 10px;">Actividad 3: Analiza los pronombres</div>
+            <p style="color: #006064; margin-bottom: 10px; font-weight: bold;">3. ANALIZA los pronombres que aparecen en las notas. Pulsa un pronombre y después su análisis para unirlos del mismo color.</p>
+
+            <div class="notes-container">
+                <div class="paper-note purple">
+                    📌 <em>Mamá, papá y <strong>yo</strong> estamos en el parque. Ven <strong>tú</strong> también.</em>
+                </div>
+                <div class="paper-note grid">
+                    📝 <em>Carlos, recoge a Inés en el colegio. Hoy <strong>ella</strong> se quedará con <strong>nosotros</strong>.</em>
+                </div>
+            </div>
+
+            <div class="match-columns">
+                <div class="match-column" id="col-pronouns">
+                    <div class="match-card" data-id="yo" onclick="selectCard(this, 'pronoun')">yo</div>
+                    <div class="match-card" data-id="tu" onclick="selectCard(this, 'pronoun')">tú</div>
+                    <div class="match-card" data-id="ella" onclick="selectCard(this, 'pronoun')">ella</div>
+                    <div class="match-card" data-id="nosotros" onclick="selectCard(this, 'pronoun')">nosotros</div>
+                </div>
+
+                <div class="match-column" id="col-analysis">
+                    <div class="match-card" data-id="nosotros" onclick="selectCard(this, 'analysis')">Pronombre personal, 1.ª persona del plural</div>
+                    <div class="match-card" data-id="yo" onclick="selectCard(this, 'pronoun-analysis')">Pronombre personal, 1.ª persona del singular</div>
+                    <div class="match-card" data-id="tu" onclick="selectCard(this, 'analysis')">Pronombre personal, 2.ª persona del singular</div>
+                    <div class="match-card" data-id="ella" onclick="selectCard(this, 'analysis')">Pronombre personal, 3.ª persona del singular</div>
+                </div>
+            </div>
+
+            <div class="buttons-row">
+                <button class="btn btn-check" onclick="checkAct3()">✔️ Comprobar</button>
+                <button class="btn btn-nav" onclick="goToScreen('screen-inicio')">🏠 Finalizar</button>
+            </div>
+            <div class="footer-credits">Elaborado por la maestra de Educación Primaria</div>
+        </div>
+
+    </div>
+
+    <script>
+        // LISTA COMPLETA DE PRONOMBRES DE LA ACTIVIDAD 1
+        const todosLosPronombres = [
+            "Yo", "Tú", "Usted", "Él", "Ella",
+            "Nosotros", "Nosotras", "Vosotros", "Vosotras", "Ustedes", "Ellos", "Ellas"
+        ];
+
+        // INICIALIZAR LOS BANCOS DE LA ACTIVIDAD 2 CON TODOS LOS PRONOMBRES
+        window.addEventListener('DOMContentLoaded', () => {
+            for (let i = 1; i <= 5; i++) {
+                const bank = document.getElementById(`bank-act2-${i}`);
+                if (bank) {
+                    todosLosPronombres.forEach((pronombre, idx) => {
+                        const tag = document.createElement('div');
+                        tag.className = 'drag-tag';
+                        tag.draggable = true;
+                        tag.innerText = pronombre;
+                        tag.id = `tag-p${i}-${idx}-${pronombre.toLowerCase()}`;
+                        tag.dataset.value = pronombre;
+                        tag.ondragstart = drag;
+                        bank.appendChild(tag);
+                    });
+                }
+            }
+        });
+
+        // SONIDOS Y VOZ
+        function speakText(elementId) {
+            window.speechSynthesis.cancel();
+            const text = document.getElementById(elementId).innerText;
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'es-ES';
+            utterance.rate = 0.95;
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function showToast(text, isSuccess) {
+            const toast = document.getElementById('feedback-toast');
+            toast.innerText = text;
+            toast.style.backgroundColor = isSuccess ? "#2e7d32" : "#e53935";
+            toast.style.display = "block";
+            setTimeout(() => { toast.style.display = "none"; }, 2500);
+        }
+
+        function goToScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+            window.speechSynthesis.cancel();
+        }
+
+        // LÓGICA DRAG & DROP
+        function allowDrop(ev) {
+            ev.preventDefault();
+        }
+
+        function drag(ev) {
+            ev.dataTransfer.setData("text", ev.target.id);
+        }
+
+        function drop(ev) {
+            ev.preventDefault();
+            const data = ev.dataTransfer.getData("text");
+            const draggedElement = document.getElementById(data);
+            let dropTarget = ev.target;
+
+            if (!dropTarget.classList.contains('drop-target') && !dropTarget.classList.contains('bank-container')) {
+                dropTarget = dropTarget.closest('.drop-target') || dropTarget.closest('.bank-container');
+            }
+
+            if (dropTarget) {
+                if (dropTarget.classList.contains('drop-target')) {
+                    if (dropTarget.children.length > 0) {
+                        const existingChild = dropTarget.children[0];
+                        const parentScreen = dropTarget.closest('.screen');
+                        const bank = parentScreen.querySelector('.bank-container');
+                        bank.appendChild(existingChild);
+                    }
+                    dropTarget.appendChild(draggedElement);
+                } else if (dropTarget.classList.contains('bank-container')) {
+                    dropTarget.appendChild(draggedElement);
+                }
+            }
+        }
+
+        // COMPROBACIONES
+        function checkAct1() {
+            const drops = ['drop-1', 'drop-2', 'drop-3', 'drop-4'];
+            let correct = 0;
+            drops.forEach(id => {
+                const target = document.getElementById(id);
+                if (target.children.length > 0 && target.children[0].id === target.dataset.ans) {
+                    correct++;
+                }
+            });
+
+            if (correct === 4) {
+                showToast("¡Excelente! Has completado la tabla y las oraciones correctamente 🌟", true);
+            } else {
+                showToast("Revisa las opciones colocadas, aún hay errores 💡", false);
+            }
+        }
+
+        function checkAct2Generic(dropIds) {
+            let correct = 0;
+            dropIds.forEach(id => {
+                const target = document.getElementById(id);
+                if (target.children.length > 0) {
+                    const tagVal = target.children[0].dataset.value || target.children[0].innerText;
+                    if (tagVal.toLowerCase() === target.dataset.ans.toLowerCase()) {
+                        correct++;
+                    }
+                }
+            });
+
+            if (correct === dropIds.length) {
+                showToast("¡Respuesta correcta! Muy bien sustituido 👏", true);
+            } else {
+                showToast("Prueba de nuevo con las etiquetas 💡", false);
+            }
+        }
+
+        // LÓGICA ACTIVIDAD 3: PAREJAS POR COLOR
+        const colors = ['#ffe0b2', '#c8e6c9', '#bbdefb', '#e1bee7'];
+        let colorIdx = 0;
+        let selectedPronoun = null;
+        let selectedAnalysis = null;
+        let pairs = {};
+
+        function selectCard(card, type) {
+            if (card.dataset.color) return; 
+
+            if (type === 'pronoun') {
+                if (selectedPronoun) selectedPronoun.classList.remove('selected');
+                selectedPronoun = card;
+                card.classList.add('selected');
+            } else {
+                if (selectedAnalysis) selectedAnalysis.classList.remove('selected');
+                selectedAnalysis = card;
+                card.classList.add('selected');
+            }
+
+            if (selectedPronoun && selectedAnalysis) {
+                const currentColor = colors[colorIdx % colors.length];
+                colorIdx++;
+
+                selectedPronoun.style.backgroundColor = currentColor;
+                selectedPronoun.dataset.color = currentColor;
+                selectedPronoun.classList.remove('selected');
+
+                selectedAnalysis.style.backgroundColor = currentColor;
+                selectedAnalysis.dataset.color = currentColor;
+                selectedAnalysis.classList.remove('selected');
+
+                pairs[selectedPronoun.dataset.id] = selectedAnalysis.dataset.id;
+
+                selectedPronoun = null;
+                selectedAnalysis = null;
+            }
+        }
+
+        function checkAct3() {
+            let correct = 0;
+            const keys = Object.keys(pairs);
+
+            keys.forEach(key => {
+                if (key === pairs[key]) correct++;
+            });
+
+            if (correct === 4 && keys.length === 4) {
+                showToast("¡Perfecto! Has analizado todos los pronombres correctamente 🎉", true);
+            } else {
+                showToast("Revisa las parejas de colores marcadas 💡", false);
+            }
+        }
+    </script>
+</body>
+</html>
